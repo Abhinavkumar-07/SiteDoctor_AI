@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+/* ── Design tokens (Frontend_Design_System.md) ─────────────────────────────── */
+@theme {
+  /* Neutral scale — cool undertone, anchored by Ink / Slate / Paper */
+  --color-neutral-900: #15171c;
+  --color-neutral-700: #2c2f38;
+  --color-neutral-500: #5b6072;
+  --color-neutral-300: #a8acba;
+  --color-neutral-200: #dbdde3;
+  --color-neutral-100: #efeff2;
+  --color-neutral-50:  #faf9f6;
+
+  /* Semantic aliases */
+  --color-paper: var(--color-neutral-50);
+  --color-ink:   var(--color-neutral-900);
+  --color-slate: var(--color-neutral-500);
+
+  /* Signal — primary accent */
+  --color-signal-50:  #eeedfb;
+  --color-signal-400: #6d64d6;
+  --color-signal-600: #4338ca;
+  --color-signal-700: #362da3;
+  --color-signal-900: #241e6b;
+
+  /* Vital — semantic score/status. Reserved for score meaning only. */
+  --color-vital-good:          #1f7a53;
+  --color-vital-good-bg:       #e7f5ee;
+  --color-vital-warning:       #b45309;
+  --color-vital-warning-bg:    #fbf0e4;
+  --color-vital-critical:      #b91c1c;
+  --color-vital-critical-bg:   #fbeaea;
+
+  /* Unavailable — a failed stage must never read as a zero score */
+  --color-unavailable-text:    #a8acba;
+  --color-unavailable-bg:      #f3f3f0;
+  --color-unavailable-border:  #c8c6be;
+
+  /* Typography */
+  --font-display: var(--font-display), system-ui, sans-serif;
+  --font-body:    var(--font-body),    system-ui, sans-serif;
+  --font-data:    var(--font-data),    ui-monospace, monospace;
+
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+}
+
+/* ── shadcn/ui required CSS variables ─────────────────────────────────────── */
+/*
+  shadcn components reference these CSS variables for their default variant
+  styles. We map them to our design token values so shadcn's built-in
+  variants (e.g. Button variant="outline") stay on-brand without additional
+  className overrides.
+*/
+@layer base {
+  :root {
+    --background:             250 249 246;   /* paper     */
+    --foreground:              21  23  28;   /* ink       */
+
+    --card:                   250 249 246;
+    --card-foreground:         21  23  28;
+
+    --popover:                250 249 246;
+    --popover-foreground:      21  23  28;
+
+    --primary:                 67  56 202;   /* signal-600 */
+    --primary-foreground:     255 255 255;
+
+    --secondary:              239 239 242;   /* neutral-100 */
+    --secondary-foreground:    21  23  28;
+
+    --muted:                  239 239 242;
+    --muted-foreground:        91  96 114;   /* slate */
+
+    --accent:                 239 239 242;
+    --accent-foreground:       21  23  28;
+
+    --destructive:            185  28  28;   /* vital-critical */
+    --destructive-foreground: 255 255 255;
+
+    --border:                 219 221 227;   /* neutral-200 */
+    --input:                  219 221 227;
+    --ring:                    67  56 202;   /* signal-600 */
+
+    --radius: 0.5rem;                        /* radius-md = 8px */
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+  }
+
+  /* Visible focus ring on every interactive element — never suppressed */
+  :focus-visible {
+    outline: 2px solid var(--color-signal-600);
+    outline-offset: 2px;
+  }
+
+  /* Respect reduced-motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ── Dark mode ──────────────────────────────────────────────────────────────── */
+/*
+  ThemeProvider is wired but dark-mode token values have not been designed
+  yet (Frontend_Design_System.md is light-only). This block is a placeholder —
+  toggling to .dark today changes nothing visually.
+*/
+.dark {
+}
