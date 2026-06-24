@@ -32,3 +32,19 @@ Do not use Turborepo yet.
 Temporarily disabled.
 
 Do not re-enable until authentication phase.
+
+
+## Frontend Integration Rule
+
+Decision:
+A frontend page is considered complete when:
+
+* UI renders correctly
+* Validation works
+* Form submission works
+* Correct API request is sent
+
+The backend endpoint does not need to exist yet if it belongs to a later phase.
+
+Reason:
+Frontend and backend are being built in separate phases.
