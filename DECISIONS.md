@@ -1,50 +1,150 @@
-# Architecture Decisions
+# Architectural Decisions
+
+## Project Structure
+
+* Single Next.js 15 application
+* No Turborepo
+* Worker extraction postponed until after MVP
+
+---
+
+## Frontend
+
+Framework
+
+* Next.js 15 App Router
+
+Language
+
+* TypeScript (strict)
+
+Styling
+
+* Tailwind CSS v4
+
+UI
+
+* shadcn/ui
+
+Animation
+
+* Framer Motion
+
+Forms
+
+* React Hook Form
+
+Validation
+
+* Zod
+
+---
+
+## Routing
+
+Landing
+
+```
+/
+```
+
+Analyze
+
+```
+/analyze
+```
+
+Audit Processing
+
+```
+/audit/[auditId]
+```
+
+Report
+
+```
+/report/[auditId]
+```
+
+---
 
 ## Screenshots
 
-Use Playwright.
+Use Playwright
 
-Capture:
+Capture only:
 
 * Desktop
 * Mobile
 
-Do not capture:
+Do not capture tablet screenshots.
 
-* Tablet
+---
 
 ## Storage
 
-Store screenshots in Google Cloud Storage.
+Images
 
-Do not store images in Supabase.
+Google Cloud Storage
 
 Database stores only URLs.
 
-## Current Architecture
+---
 
-Single Next.js application.
+## Authentication
 
-Do not use Turborepo yet.
+Supabase Auth
 
-## Supabase
+Currently disabled.
 
-Temporarily disabled.
+Authentication will be enabled during the Auth phase.
 
-Do not re-enable until authentication phase.
+---
 
+## Development Strategy
 
-## Frontend Integration Rule
+Frontend-first development.
 
-Decision:
-A frontend page is considered complete when:
+Backend APIs are implemented only after frontend pages are completed.
 
-* UI renders correctly
-* Validation works
-* Form submission works
-* Correct API request is sent
+404 responses from audit endpoints are expected until backend implementation begins.
 
-The backend endpoint does not need to exist yet if it belongs to a later phase.
+---
 
-Reason:
-Frontend and backend are being built in separate phases.
+## Completed Frontend Milestones
+
+* Frontend Foundation
+* Design System
+* Landing Page
+* Analyze Page
+* Audit Processing Page
+* Report Page
+
+Frontend MVP is now complete.
+
+---
+
+## Next Development Phase
+
+Backend API Development
+
+Implement:
+
+* POST /api/v1/audits
+* GET /api/v1/audits/:id/status
+* GET /api/v1/audits/:id/report
+
+using mock responses before connecting production services.
+
+---
+
+## Git Workflow
+
+After completing every milestone:
+
+1. Test locally
+2. Commit
+3. Push to GitHub
+4. Update PROJECT_MEMORY.md
+5. Update CHANGELOG.md
+6. Update DECISIONS.md (only if an architectural decision changed)
