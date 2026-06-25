@@ -1,22 +1,63 @@
-# Current Status
+# PROJECT_MEMORY.md
 
-## Project
+# SiteDoctor AI — Project Memory
 
-**SiteDoctor AI**
+Last Updated: After Step 7.8 (PDF Export)
 
-AI-powered website auditing platform built with Next.js 15, TypeScript, Tailwind CSS v4, shadcn/ui, Playwright, Lighthouse, Gemini AI and Supabase.
+Latest Commit: <replace after commit>
+
+Repository:
+SiteDoctor_AI
 
 ---
 
-# Current Progress
+# Project Overview
 
-## Planning
+SiteDoctor AI is an AI-powered website auditing platform that analyzes websites for:
+
+* Performance
+* SEO
+* Security
+* Accessibility
+* UX
+* Conversion Optimization
+
+Development follows a **Frontend-First** approach. All frontend features are completed before backend APIs are implemented.
+
+---
+
+# Technology Stack
+
+## Frontend
+
+* Next.js 15 (App Router)
+* TypeScript (Strict Mode)
+* Tailwind CSS v4
+* shadcn/ui
+* Framer Motion
+* React Hook Form
+* Zod
+* SWR
+* @react-pdf/renderer
+
+## Planned Backend
+
+* Next.js Route Handlers
+* Supabase
+* Playwright
+* Lighthouse
+* Gemini AI
+* Google Cloud Storage
+
+---
+
+# Completed Planning
 
 ✅ Step 1 — PRD
 
 ✅ Step 2 — Architecture
 
-✅ Step 3 — Database
+✅ Step 3 — Database Design
 
 ✅ Step 4 — API Contract
 
@@ -26,7 +67,7 @@ AI-powered website auditing platform built with Next.js 15, TypeScript, Tailwind
 
 ---
 
-# Frontend
+# Completed Frontend
 
 ✅ Step 7.1 — Frontend Foundation
 
@@ -40,120 +81,108 @@ AI-powered website auditing platform built with Next.js 15, TypeScript, Tailwind
 
 ✅ Step 7.6 — Report Page
 
-⏳ Step 7.7 — Shareable Report
+✅ Step 7.7 — Shareable Report
 
-⏳ Step 7.8 — PDF Export UI
+✅ Step 7.8 — PDF Export
 
----
-
-# Current Application
-
-Working Routes
-
-```
-/
-Landing Page
-```
-
-```
-/analyze
-Analyze Page
-```
-
-```
-/audit/[auditId]
-Processing Page
-```
-
-```
-/report/[auditId]
-Report Page
-```
+Frontend MVP is now complete.
 
 ---
 
-# Current Frontend Status
+# Working Routes
 
-Landing Page
+* `/`
+* `/analyze`
+* `/audit/[auditId]`
+* `/report/[auditId]`
+* `/share/[shareToken]`
 
-* Complete
+---
 
-Analyze Page
+# Frontend Status
 
-* URL validation complete
-* Zod validation complete
-* React Hook Form complete
-* Error handling complete
-* Submission flow complete
+Completed Features
 
-Processing Page
-
-* Polling hook complete
-* Progress UI complete
-* Error UI complete
-* Retry flow complete
-
-Report Page
-
-* Report client complete
-* Report sections complete
-* Loading skeleton complete
-* Empty state complete
-* Error state complete
-* Responsive layout complete
+* Landing Page
+* Analyze workflow
+* URL validation
+* Report page
+* Audit processing page
+* Shareable reports
+* PDF export
+* Responsive layout
+* Loading states
+* Error states
+* Empty states
 
 ---
 
 # Backend Status
 
-Not implemented yet.
+Backend has not been implemented yet.
 
-Current frontend intentionally returns:
+Current frontend intentionally receives 404 responses for:
 
-```
-404
-```
+* `POST /api/v1/audits`
+* `GET /api/v1/audits/:id/status`
+* `GET /api/v1/audits/:id/report`
+* `GET /api/v1/share/:shareToken`
 
-for
-
-```
-GET /api/v1/audits/:id/status
-```
-
-and
-
-```
-GET /api/v1/audits/:id/report
-```
-
-This is expected because backend development has not started.
+This is expected.
 
 ---
 
-# Current Repository
+# Architectural Decisions
 
-Latest Commit
+* Single Next.js application
+* Frontend-first development
+* No Turborepo
+* Worker extraction postponed until after MVP
+* Playwright captures Desktop and Mobile screenshots
+* Google Cloud Storage stores screenshots
+* Database stores screenshot URLs
+* Public reports use `/share/[shareToken]`
+* Shared reports use `noindex, nofollow`
+* Client-side PDF generation uses `@react-pdf/renderer`
+* PDF architecture is designed for future server-side migration
 
-```
-Complete Step 7.6 Report Page
-```
+---
 
-(Remember to update this with the latest commit hash after every push.)
+# Current Progress
+
+Planning
+
+██████████ 100%
+
+Frontend
+
+██████████ 100%
+
+Backend
+
+░░░░░░░░░░ 0%
+
+Infrastructure
+
+░░░░░░░░░░ 0%
 
 ---
 
 # Next Step
 
-## Step 8
+## Step 8 — Backend API Development
 
-Backend API Development
+Initial APIs:
 
-Implement:
+* `POST /api/v1/audits`
+* `GET /api/v1/audits/:id/status`
+* `GET /api/v1/audits/:id/report`
+* `GET /api/v1/share/:shareToken`
 
-POST /api/v1/audits
+The backend will initially use mock responses before integrating:
 
-GET /api/v1/audits/:id/status
-
-GET /api/v1/audits/:id/report
-
-using mock responses first, followed by real integrations with Playwright, Lighthouse, Gemini and Supabase.
+* Supabase
+* Playwright
+* Lighthouse
+* Gemini AI
+* Google Cloud Storage

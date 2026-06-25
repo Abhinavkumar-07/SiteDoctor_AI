@@ -182,3 +182,16 @@ Reason:
 - Shared reports may contain user-specific or client-specific audit data.
 - Reports should be accessible only to people with the link.
 - Prevent accidental indexing by search engines.
+
+## PDF Export
+
+Frontend PDF export uses `@react-pdf/renderer`.
+
+Reasons:
+
+* Generates vector-based PDFs with selectable text.
+* Produces consistent output across browsers.
+* Reuses existing report components and data model.
+* Supports a straightforward migration to server-side PDF generation in the future.
+
+Future backend implementation will replace client-side PDF generation with a Route Handler while preserving the same UI and document structure.
