@@ -148,3 +148,37 @@ After completing every milestone:
 4. Update PROJECT_MEMORY.md
 5. Update CHANGELOG.md
 6. Update DECISIONS.md (only if an architectural decision changed)
+
+## Shareable Reports
+
+Public reports will use a cryptographically secure share token instead of the internal audit ID.
+
+Example:
+
+/share/8GxP2KqN4Lm
+
+Reason:
+
+- Does not expose database IDs
+- Share links can be revoked
+- Supports expiration in the future
+- Industry-standard approach
+- Compatible with authenticated/private reports later
+
+## Shareable Reports
+
+Public share links use:
+
+/share/[shareToken]
+
+Search engines are instructed not to index shared reports by default using:
+
+robots:
+  index: false
+  follow: false
+
+Reason:
+
+- Shared reports may contain user-specific or client-specific audit data.
+- Reports should be accessible only to people with the link.
+- Prevent accidental indexing by search engines.
