@@ -163,8 +163,8 @@ export function UrlSubmissionForm() {
       if (!isMountedRef.current) return;
       setStatus("redirecting");
       router.push(
-        `/audit/${result.id}?url=${encodeURIComponent(data.url)}`
-      );
+  `/audit/${result.auditId}?url=${encodeURIComponent(data.url)}`
+);
     } catch (err) {
       if (!isMountedRef.current) return;
 

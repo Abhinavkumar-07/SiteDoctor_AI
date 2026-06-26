@@ -187,3 +187,67 @@ Step 8 — Backend API Development
 ## Next Step
 
 **Step 7.8 — PDF Export UI**
+
+## Step 8.1 Complete
+
+### Backend APIs
+
+Implemented
+
+* POST /api/v1/audits
+* GET /api/v1/audits/:auditId/status
+* GET /api/v1/audits/:auditId/report
+* GET /api/v1/share/:shareToken
+
+### Backend
+
+* Mock audit store
+* Mock status generator
+* Mock report generator
+* Mock share generator
+* Audit service
+* Report service
+* Share service
+* API response helpers
+* API error helpers
+* Validation layer
+
+### Verification
+
+Verified complete end-to-end flow:
+
+Analyze
+
+↓
+
+Audit Processing
+
+↓
+
+Report
+
+↓
+
+Share
+
+↓
+
+PDF Export
+
+All frontend routes now communicate successfully with the backend mock APIs.
+
+---
+
+## Current Status
+
+Frontend
+
+✅ Complete
+
+Backend
+
+✅ Step 8.1 Complete
+
+Next
+
+Step 8.2 — Backend Architecture Refactor

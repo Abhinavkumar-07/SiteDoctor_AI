@@ -1,0 +1,37 @@
+// app/api/v1/audits/route.ts
+//
+// POST /api/v1/audits
+//
+// Creates a new audit job.
+// Returns 201 with { auditId, status, createdAt }.
+// Returns 400 if the request body fails validation.
+//
+// Route handler is intentionally thin:
+//   parse → validate → delegate to service → respond.
+
+import { NextRequest } from "next/server";
+import { createAuditSchema } from "@/lib/validations/create-audit.schema";
+import { createAudit } from "@/lib/services/audit.service";
+import { ok, withErrorHandling } from "@/lib/utils/api-response";
+import { Errors } from "@/lib/types/api-errors";
+
+export async function POST(req: NextRequest) {
+  return withErrorHandling(async () => {
+    // Parse body — handle malformed JSON gracefully
+    let body: unknown;
+    try {
+      body = await req.json();
+    } catch {
+      throw Errors.validation({ message: "Request body must be valid JSON." });
+    }
+
+    // Validate
+    const result = createAuditSchema.safeParse(body);
+    if (!result.success) {
+      throw Errors.validation(result.error.flatten().fieldErrors);
+    }
+
+    const response = await createAudit(result.data.url);
+    return ok(response, 201);
+  });
+}

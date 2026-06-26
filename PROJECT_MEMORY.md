@@ -2,58 +2,18 @@
 
 # SiteDoctor AI — Project Memory
 
-Last Updated: After Step 7.8 (PDF Export)
+**Last Updated:** After Step 8.1 (Mock Backend APIs)
 
-Latest Commit: <replace after commit>
-
-Repository:
-SiteDoctor_AI
+**Latest Commit:**
+(Replace with the latest commit hash after pushing.)
 
 ---
 
-# Project Overview
+# Current Progress
 
-SiteDoctor AI is an AI-powered website auditing platform that analyzes websites for:
+## Planning
 
-* Performance
-* SEO
-* Security
-* Accessibility
-* UX
-* Conversion Optimization
-
-Development follows a **Frontend-First** approach. All frontend features are completed before backend APIs are implemented.
-
----
-
-# Technology Stack
-
-## Frontend
-
-* Next.js 15 (App Router)
-* TypeScript (Strict Mode)
-* Tailwind CSS v4
-* shadcn/ui
-* Framer Motion
-* React Hook Form
-* Zod
-* SWR
-* @react-pdf/renderer
-
-## Planned Backend
-
-* Next.js Route Handlers
-* Supabase
-* Playwright
-* Lighthouse
-* Gemini AI
-* Google Cloud Storage
-
----
-
-# Completed Planning
-
-✅ Step 1 — PRD
+✅ Step 1 — Product Requirements Document
 
 ✅ Step 2 — Architecture
 
@@ -67,7 +27,7 @@ Development follows a **Frontend-First** approach. All frontend features are com
 
 ---
 
-# Completed Frontend
+## Frontend
 
 ✅ Step 7.1 — Frontend Foundation
 
@@ -85,104 +45,98 @@ Development follows a **Frontend-First** approach. All frontend features are com
 
 ✅ Step 7.8 — PDF Export
 
-Frontend MVP is now complete.
+Frontend MVP is complete.
 
 ---
 
-# Working Routes
+## Backend
 
-* `/`
-* `/analyze`
-* `/audit/[auditId]`
-* `/report/[auditId]`
-* `/share/[shareToken]`
+### ✅ Step 8.1 — Mock Backend APIs
 
----
+Implemented:
 
-# Frontend Status
+POST /api/v1/audits
 
-Completed Features
+GET /api/v1/audits/:auditId/status
 
-* Landing Page
-* Analyze workflow
-* URL validation
-* Report page
-* Audit processing page
-* Shareable reports
-* PDF export
-* Responsive layout
-* Loading states
-* Error states
-* Empty states
+GET /api/v1/audits/:auditId/report
 
----
+GET /api/v1/share/:shareToken
 
-# Backend Status
+Current implementation includes:
 
-Backend has not been implemented yet.
+* Mock Audit Store
+* Mock Status Generator
+* Mock Report Generator
+* Mock Share Generator
+* Service Layer
+* Route Handlers
+* Validation
+* Shared API Response Helpers
+* Shared API Error Helpers
 
-Current frontend intentionally receives 404 responses for:
+Current application flow:
 
-* `POST /api/v1/audits`
-* `GET /api/v1/audits/:id/status`
-* `GET /api/v1/audits/:id/report`
-* `GET /api/v1/share/:shareToken`
+Analyze Page
 
-This is expected.
+↓
 
----
+POST /api/v1/audits
 
-# Architectural Decisions
+↓
 
-* Single Next.js application
-* Frontend-first development
-* No Turborepo
-* Worker extraction postponed until after MVP
-* Playwright captures Desktop and Mobile screenshots
-* Google Cloud Storage stores screenshots
-* Database stores screenshot URLs
-* Public reports use `/share/[shareToken]`
-* Shared reports use `noindex, nofollow`
-* Client-side PDF generation uses `@react-pdf/renderer`
-* PDF architecture is designed for future server-side migration
+Audit Processing Page
 
----
+↓
 
-# Current Progress
+GET /api/v1/audits/:auditId/status
 
-Planning
+↓
 
-██████████ 100%
+Report Page
 
-Frontend
+↓
 
-██████████ 100%
+GET /api/v1/audits/:auditId/report
 
-Backend
+↓
 
-░░░░░░░░░░ 0%
+Share Page
 
-Infrastructure
+↓
 
-░░░░░░░░░░ 0%
+GET /api/v1/share/:shareToken
+
+↓
+
+PDF Export
+
+The frontend is now fully connected to the mock backend.
 
 ---
 
 # Next Step
 
-## Step 8 — Backend API Development
+## Step 8.2
 
-Initial APIs:
+Backend Architecture Refactor
 
-* `POST /api/v1/audits`
-* `GET /api/v1/audits/:id/status`
-* `GET /api/v1/audits/:id/report`
-* `GET /api/v1/share/:shareToken`
+Goals:
 
-The backend will initially use mock responses before integrating:
+* Repository Layer
+* Dependency Injection
+* Interfaces
+* Pipeline Layer
+* Production-ready backend architecture
 
-* Supabase
-* Playwright
-* Lighthouse
-* Gemini AI
-* Google Cloud Storage
+No frontend changes.
+
+No Playwright.
+
+No Lighthouse.
+
+No Gemini.
+
+No Supabase.
+
+API behaviour must remain identical.
