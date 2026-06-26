@@ -1,10 +1,13 @@
-// lib/mock/mock-report.ts
+// lib/mock/generators/mock-report-data.ts
 //
-// Builds a complete, realistic AuditReportResponse.
-// Scores are seeded from the audited URL so the same URL always returns the
-// same scores — useful for demos and deterministic testing.
+// Pure function that builds a complete AuditReportResponse from an auditId,
+// URL, and createdAt timestamp.  No class, no interface — just data.
 //
-// No randomness — fully deterministic.
+// Scores are seeded deterministically from the URL so the same URL always
+// returns the same values, which makes demos and integration tests stable.
+//
+// This is the ONLY file in the codebase that contains fake report data.
+// Nothing outside lib/mock/ should import from here.
 
 import type {
   AuditReportResponse,
@@ -17,15 +20,13 @@ import { recId } from "@/lib/utils/id";
 
 // ── Deterministic score seeding ───────────────────────────────────────────────
 
-/** Simple djb2-style hash of a string → number 0-99 */
 function hashScore(seed: string, salt: string): number {
   const str = seed + salt;
   let hash = 5381;
   for (let i = 0; i < str.length; i++) {
     hash = ((hash << 5) + hash) ^ str.charCodeAt(i);
   }
-  // Map to 40–98 range (realistic audit scores — never 100, never catastrophic)
-  return 40 + (Math.abs(hash) % 59);
+  return 40 + (Math.abs(hash) % 59); // 40–98 range
 }
 
 function scoreToGrade(score: number): Grade {
@@ -53,7 +54,7 @@ const CATEGORY_META: Record<
     label: "SEO",
     summaryTemplate: (s) =>
       s >= 75
-        ? "Strong meta tags, structured data and crawlability. Title and description are well-optimised."
+        ? "Strong meta tags, structured data, and crawlability. Title and description are well-optimised."
         : "Missing meta description on several pages. Heading hierarchy has gaps and image alt text is incomplete.",
   },
   security: {
@@ -93,7 +94,7 @@ const REC_BANK: Omit<Recommendation, "id">[] = [
     category: "performance",
     title: "Eliminate render-blocking resources",
     description:
-      "Three third-party scripts are loaded synchronously in <head>, blocking first paint by an estimated 640 ms. Move them to async/defer or load them after the main bundle.",
+      "Three third-party scripts are loaded synchronously in <head>, blocking first paint by an estimated 640 ms. Move them to async/defer or load after the main bundle.",
     priority: "high",
     effort: "medium",
     impact: "Reduce FCP by ~640 ms",
@@ -102,7 +103,7 @@ const REC_BANK: Omit<Recommendation, "id">[] = [
     category: "performance",
     title: "Serve images in modern formats",
     description:
-      "14 images are served as PNG or JPEG. Converting to WebP or AVIF would reduce image payload by approximately 42%, improving LCP on image-heavy pages.",
+      "14 images are served as PNG or JPEG. Converting to WebP or AVIF reduces image payload by approximately 42%, improving LCP on image-heavy pages.",
     priority: "high",
     effort: "low",
     impact: "Reduce image payload by ~42%",
@@ -111,7 +112,7 @@ const REC_BANK: Omit<Recommendation, "id">[] = [
     category: "performance",
     title: "Enable text compression",
     description:
-      "The server does not apply Brotli or Gzip compression to HTML, CSS, or JS responses. Enabling compression could reduce transfer size by up to 70%.",
+      "The server does not apply Brotli or Gzip compression to HTML, CSS, or JS. Enabling compression could reduce transfer size by up to 70%.",
     priority: "medium",
     effort: "low",
     impact: "Reduce transfer size by ~70%",
@@ -120,7 +121,7 @@ const REC_BANK: Omit<Recommendation, "id">[] = [
     category: "seo",
     title: "Add meta descriptions to all pages",
     description:
-      "7 pages are missing the <meta name='description'> tag. Search engines fall back to body copy, which often produces poor snippets and reduces click-through rates.",
+      "7 pages are missing the meta description tag. Search engines fall back to body copy, producing poor snippets and reducing click-through rates.",
     priority: "high",
     effort: "low",
     impact: "Improve CTR from search results",
@@ -138,7 +139,7 @@ const REC_BANK: Omit<Recommendation, "id">[] = [
     category: "seo",
     title: "Add structured data markup",
     description:
-      "No JSON-LD structured data is present. Adding Organisation, BreadcrumbList, and Product schema improves rich-snippet eligibility in search results.",
+      "No JSON-LD structured data is present. Adding Organisation, BreadcrumbList, and Product schema improves rich-snippet eligibility.",
     priority: "low",
     effort: "medium",
     impact: "Enable rich search snippets",
@@ -165,7 +166,7 @@ const REC_BANK: Omit<Recommendation, "id">[] = [
     category: "accessibility",
     title: "Fix colour contrast failures",
     description:
-      "6 text elements have a contrast ratio below 4.5:1, failing WCAG AA. The primary CTA button (#6366f1 on white) has a ratio of 3.2:1. Darken the foreground or lighten the background.",
+      "6 text elements have a contrast ratio below 4.5:1, failing WCAG AA. The primary CTA button has a ratio of 3.2:1. Darken the foreground or lighten the background.",
     priority: "high",
     effort: "low",
     impact: "Pass WCAG 2.1 AA colour contrast",
@@ -174,64 +175,28 @@ const REC_BANK: Omit<Recommendation, "id">[] = [
     category: "accessibility",
     title: "Add labels to all form inputs",
     description:
-      "The newsletter signup form has 2 inputs without associated <label> elements. Screen readers will announce them as 'Edit text', providing no context to the user.",
+      "The newsletter signup form has 2 inputs without associated label elements. Screen readers will announce them as 'Edit text', providing no context to the user.",
     priority: "high",
     effort: "low",
     impact: "Accessible to screen reader users",
   },
   {
-    category: "accessibility",
-    title: "Improve keyboard navigation order",
-    description:
-      "The skip-to-content link is present but non-functional. Focus order in the navigation dropdown does not match visual order, causing confusion for keyboard users.",
-    priority: "medium",
-    effort: "medium",
-    impact: "WCAG 2.1 success criterion 2.4.3",
-  },
-  {
     category: "ux",
     title: "Increase mobile tap target sizes",
     description:
-      "8 interactive elements have tap targets smaller than 44×44 px. This causes mis-taps on mobile devices. The Google recommended minimum is 48×48 dp.",
+      "8 interactive elements have tap targets smaller than 44×44 px. The Google-recommended minimum is 48×48 dp.",
     priority: "medium",
     effort: "low",
     impact: "Reduce mobile mis-tap rate",
   },
   {
-    category: "ux",
-    title: "Add loading states to async actions",
-    description:
-      "Form submissions and data fetches provide no visual feedback during loading. Users cannot distinguish between a slow server and a broken form.",
-    priority: "medium",
-    effort: "medium",
-    impact: "Reduce user abandonment on slow connections",
-  },
-  {
     category: "conversion",
     title: "Move primary CTA above the fold",
     description:
-      "On mobile (375 px), the primary CTA button is positioned 780 px from the top — well below the fold. Users who don't scroll never see it. Restructure the hero section.",
+      "On mobile (375 px), the primary CTA is positioned 780 px from the top — well below the fold. Restructure the hero section.",
     priority: "high",
     effort: "medium",
     impact: "Estimated +15–25% CTA visibility",
-  },
-  {
-    category: "conversion",
-    title: "Add social proof elements",
-    description:
-      "The landing page has no testimonials, review counts, or trust badges. Adding 3–5 customer testimonials above the fold typically increases conversion by 15–20%.",
-    priority: "medium",
-    effort: "medium",
-    impact: "Estimated +15–20% conversion rate",
-  },
-  {
-    category: "conversion",
-    title: "Reduce form field count",
-    description:
-      "The signup form collects 7 fields including optional information. Research shows reducing to 3–4 essential fields can double completion rates.",
-    priority: "low",
-    effort: "low",
-    impact: "Estimated 2× form completion rate",
   },
 ];
 
@@ -251,20 +216,17 @@ export function buildMockReport(
     "conversion",
   ];
 
-  // Build category scores seeded from url
   const categories: CategoryScore[] = categoryIds.map((id) => {
     const score = hashScore(url, id);
-    const grade = scoreToGrade(score);
     return {
       id,
       label: CATEGORY_META[id].label,
       score,
-      grade,
+      grade: scoreToGrade(score),
       summary: CATEGORY_META[id].summaryTemplate(score),
     };
   });
 
-  // Overall score = weighted average (performance and SEO weighted higher)
   const weights: Record<CategoryId, number> = {
     performance: 0.25,
     seo: 0.20,
@@ -277,9 +239,7 @@ export function buildMockReport(
   const overallScore = Math.round(
     categories.reduce((sum, cat) => sum + cat.score * weights[cat.id], 0),
   );
-  const overallGrade = scoreToGrade(overallScore);
 
-  // Select a realistic subset of recommendations
   const recommendations: Recommendation[] = REC_BANK.slice(0, 12).map(
     (rec, i) => ({ ...rec, id: recId(rec.category, i) }),
   );
@@ -293,17 +253,18 @@ export function buildMockReport(
     url,
     completedAt,
     overallScore,
-    overallGrade,
+    overallGrade: scoreToGrade(overallScore),
     summary:
       overallScore >= 75
-        ? `${url} performs well overall, with strong SEO and security posture. Key improvements are available in performance and accessibility.`
+        ? `${url} performs well overall with strong SEO and security posture. Key improvements are available in performance and accessibility.`
         : `${url} has significant issues across multiple categories. Priority fixes in performance and security will have the highest impact on user experience and search rankings.`,
     categories,
     recommendations,
     screenshots: {
-      // Using placeholder images — real GCS URLs will be injected in Step 8.2
-      desktopUrl: "https://placehold.co/1280x800/111111/6366f1?text=Desktop+Screenshot",
-      mobileUrl: "https://placehold.co/390x844/111111/6366f1?text=Mobile+Screenshot",
+      desktopUrl:
+        "https://placehold.co/1280x800/111111/6366f1?text=Desktop+Screenshot",
+      mobileUrl:
+        "https://placehold.co/390x844/111111/6366f1?text=Mobile+Screenshot",
     },
     metadata: {
       lighthouseVersion: "12.2.1",

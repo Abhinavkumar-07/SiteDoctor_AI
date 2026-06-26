@@ -2,43 +2,32 @@
 //
 // Owns the audit lifecycle: creation and status polling.
 //
-// In Step 8.2+ this file is the ONLY thing that changes when real
-// infrastructure is wired in.  Route handlers never change.
-//
-// Current implementation: in-process mock store + time-based status.
+// Step 8.2 changes vs Step 8.1:
+//   - No longer imports mock data directly.
+//   - createAudit() delegates to the pipeline (which validates, creates,
+//     and persists via injected deps from the container).
+//   - getAuditStatus() delegates to AuditRepository + IAuditEngine via
+//     the container — both injected, neither imported as a concrete class.
 
-import { auditStore } from "@/lib/mock/mock-audit-store";
-import { buildMockStatus } from "@/lib/mock/mock-status";
-import { generateAuditId, auditIdToShareToken } from "@/lib/utils/id";
-import { Errors } from "@/lib/types/api-errors";
-import type { CreateAuditResponse, AuditStatusResponse, AuditRecord } from "@/lib/types/audit-api";
-
-// ── createAudit ───────────────────────────────────────────────────────────────
+import type { CreateAuditResponse, AuditStatusResponse } from "@/lib/types/audit-api";
+import { getContainer } from "@/lib/container";
+import { runCreateAuditPipeline } from "@/lib/pipeline/audit-pipeline";
+import { AuditRepository } from "@/lib/repositories/audit.repository";
 
 export async function createAudit(url: string): Promise<CreateAuditResponse> {
-  const auditId = generateAuditId();
-  const createdAt = new Date().toISOString();
-  const shareToken = auditIdToShareToken(auditId);
-
-  const record: AuditRecord = { auditId, url, createdAt, shareToken };
-  auditStore.set(record);
-
-  return {
-    auditId,
-    status: "queued",
-    createdAt,
-  };
+  const container = getContainer();
+  return runCreateAuditPipeline(url, container);
 }
-
-// ── getAuditStatus ────────────────────────────────────────────────────────────
 
 export async function getAuditStatus(
   auditId: string,
 ): Promise<AuditStatusResponse> {
-  const record = auditStore.get(auditId);
-  if (!record) {
-    throw Errors.notFound(`Audit ${auditId}`);
-  }
-
-  return buildMockStatus(record.auditId, record.url, record.createdAt);
+  const container = getContainer();
+  const repo = new AuditRepository(container.auditStore);
+  const record = await repo.getById(auditId); // throws 404 if missing
+  return container.auditEngine.getStatus(
+    record.auditId,
+    record.url,
+    record.createdAt,
+  );
 }
