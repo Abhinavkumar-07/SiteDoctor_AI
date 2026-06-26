@@ -23,14 +23,10 @@ function getMap(): Map<string, AuditRecord> {
 
 export class MockAuditStore implements IAuditStore {
   async save(record: AuditRecord): Promise<void> {
-    console.log("SAVE", record.auditId);
     getMap().set(record.auditId, record);
-    console.log("STORE SIZE", getMap().size);
   }
 
   async findById(auditId: string): Promise<AuditRecord | undefined> {
-    console.log("FIND", auditId);
-    console.log("STORE SIZE", getMap().size);
     return getMap().get(auditId);
   }
 

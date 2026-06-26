@@ -117,26 +117,14 @@ The frontend is now fully connected to the mock backend.
 
 # Next Step
 
-## Step 8.2
+## Step 8.3
 
-Backend Architecture Refactor
+Real Service Integrations
 
-Goals:
+• Playwright
+• Lighthouse
+• Screenshot Provider
+• Report Generator
+• Storage Provider
 
-* Repository Layer
-* Dependency Injection
-* Interfaces
-* Pipeline Layer
-* Production-ready backend architecture
-
-No frontend changes.
-
-No Playwright.
-
-No Lighthouse.
-
-No Gemini.
-
-No Supabase.
-
-API behaviour must remain identical.
+Architecture already supports hot-swapping these implementations through the dependency container.

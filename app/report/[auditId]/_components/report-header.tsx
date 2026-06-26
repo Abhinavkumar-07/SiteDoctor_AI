@@ -31,7 +31,7 @@ export function ReportHeader({ url, auditId, completedAt }: ReportHeaderProps) {
   } catch {
     // keep original
   }
-
+  
   return (
     <motion.header
       initial={{ opacity: 0, y: -12 }}

@@ -250,4 +250,48 @@ Backend
 
 Next
 
-Step 8.2 — Backend Architecture Refactor
+---
+
+## Step 8.2 Complete
+
+### Backend Architecture Refactor
+
+Added
+
+* Dependency Injection Container
+* Repository Layer
+* Pipeline Layer
+* Interface Contracts
+* Mock Engines
+* Mock Generators
+* Storage Provider Interface
+* Screenshot Provider Interface
+* Recommendation Generator Interface
+
+Refactored
+
+* Audit Service
+* Report Service
+* Share Service
+
+Backend APIs
+
+No API changes
+
+Endpoints remain identical:
+
+POST /api/v1/audits
+
+GET /api/v1/audits/:auditId/status
+
+GET /api/v1/audits/:auditId/report
+
+GET /api/v1/share/:shareToken
+
+Purpose
+
+Prepare backend for swapping mock implementations with production services without changing API routes or frontend.
+
+Status
+
+Complete

@@ -195,3 +195,35 @@ Reasons:
 * Supports a straightforward migration to server-side PDF generation in the future.
 
 Future backend implementation will replace client-side PDF generation with a Route Handler while preserving the same UI and document structure.
+
+
+## Decision 008 — Dependency Injection Architecture
+
+Status
+
+Accepted
+
+Reason
+
+Backend services should depend on interfaces rather than concrete implementations.
+
+Decision
+
+Introduce:
+
+* Dependency Injection Container
+* Repository Layer
+* Pipeline Layer
+* Interface Contracts
+
+Benefits
+
+* Easy replacement of mock services
+* Better separation of concerns
+* Simplified testing
+* Stable API layer
+* Production-ready architecture
+
+Future Impact
+
+Playwright, Lighthouse, Gemini, Supabase and Google Cloud Storage can be introduced by replacing container registrations rather than modifying API routes or services.
