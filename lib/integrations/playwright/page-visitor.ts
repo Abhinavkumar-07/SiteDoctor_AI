@@ -102,27 +102,42 @@ export async function visitPage(
         httpStatus = response.status();
       }
     });
+try {
 
-    await page.goto(url, {
-      waitUntil: "networkidle",
-      timeout: CAPTURE_CONFIG.navigationTimeoutMs,
-    });
+  await page.goto(url, {
+    waitUntil: "networkidle",
+    timeout: 10000,
+  });
 
-    // Let deferred JS finish settling
-    await page.waitForTimeout(CAPTURE_CONFIG.postLoadWaitMs);
+} catch(err) {
 
-    const metadata = await extractMetadata(page);
-    metadata.httpStatus = httpStatus;
+  console.warn(
+    "networkidle timed out, falling back to load"
+  );
 
-    const screenshotBuffer = await page.screenshot({
-      type: CAPTURE_CONFIG.screenshotType,
-      fullPage: true, // above-the-fold only (matches viewport)
-    });
+  await page.goto(url, {
+    waitUntil: "load",
+    timeout: 10000,
+  });
 
+}
+
+await page.waitForTimeout(
+  CAPTURE_CONFIG.postLoadWaitMs
+);
+
+const metadata = await extractMetadata(page);
+metadata.httpStatus = httpStatus;
+
+const screenshotBuffer = await page.screenshot({
+  type: CAPTURE_CONFIG.screenshotType,
+  fullPage: true,
+});
     return { screenshotBuffer: Buffer.from(screenshotBuffer), metadata };
   } finally {
     // Always close the context — isolates each audit completely
-    if (context) {
+    if (
+    context) {
       await context.close().catch(() => {
         /* ignore close errors */
       });

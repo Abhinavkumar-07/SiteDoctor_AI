@@ -64,76 +64,79 @@ export async function runLighthouse(
   options: LighthouseRunOptions = {},
 ): Promise<LighthouseRunResult> {
 
-  const formFactor = options.formFactor ?? "desktop";
-
   const chrome = await launch({
-    chromeFlags: ["--headless"],
+
+    chromeFlags: [
+
+      "--headless",
+
+      "--disable-gpu",
+
+      "--no-sandbox"
+
+    ]
+
   });
 
   const startMs = Date.now();
 
   try {
 
-    const result = await lighthouse(url, {
-      port: chrome.port,
-      output: "json",
-      logLevel: "error",
-      formFactor,
+    console.log("Chrome port:", chrome.port);
 
-      throttlingMethod: "simulate",
+    console.log("Starting Lighthouse");
 
-      throttling:
-        formFactor === "mobile"
-          ? {
-              rttMs: 150,
-              throughputKbps: 1638.4,
-              cpuSlowdownMultiplier: 4,
-              requestLatencyMs: 0,
-              downloadThroughputKbps: 0,
-              uploadThroughputKbps: 0,
-            }
-          : {
-              rttMs: 40,
-              throughputKbps: 10240,
-              cpuSlowdownMultiplier: 1,
-              requestLatencyMs: 0,
-              downloadThroughputKbps: 0,
-              uploadThroughputKbps: 0,
-            },
+    const result = await lighthouse(
 
-      screenEmulation:
-        formFactor === "mobile"
-          ? {
-              mobile: true,
-              width: 390,
-              height: 844,
-              deviceScaleFactor: 3,
-              disabled: false,
-            }
-          : {
-              mobile: false,
-              width: 1350,
-              height: 940,
-              deviceScaleFactor: 1,
-              disabled: false,
-            },
+      url,
 
-      onlyCategories: [...ENABLED_CATEGORIES],
+      {
 
-    } as Parameters<typeof lighthouse>[1]);
+        port: chrome.port,
 
-    if (!result || !result.lhr) {
-  throw new Error(
-    `[LighthouseRunner] Lighthouse returned no result for ${url}`,
-  );
-}
+        output: "json",
+
+        logLevel: "info",
+
+        onlyCategories: [
+
+          "performance",
+
+          "accessibility",
+
+          "seo",
+
+          "best-practices",
+
+        ],
+
+      }
+
+    );
+
+    console.log("Lighthouse finished");
+
+    if (!result?.lhr) {
+
+      throw new Error(
+
+        `[LighthouseRunner] Lighthouse returned no result for ${url}`
+
+      );
+
+    }
 
     return {
+
       lhr: result.lhr as LHResult,
+
       durationMs: Date.now() - startMs,
+
     };
 
-  } finally {
+  }
+
+  finally {
 
     await chrome.kill();
 
