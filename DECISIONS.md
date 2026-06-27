@@ -227,3 +227,21 @@ Benefits
 Future Impact
 
 Playwright, Lighthouse, Gemini, Supabase and Google Cloud Storage can be introduced by replacing container registrations rather than modifying API routes or services.
+
+## ADR-008
+
+Decision:
+Introduce Playwright before Lighthouse.
+
+Reason:
+Screenshots and page navigation are reusable infrastructure.
+
+Consequences:
+Step 8.4 only replaces score generation.
+Routes, services, repositories, interfaces and pipeline stages remain unchanged.
+
+Temporary Tradeoff:
+PlaywrightAuditEngine still consumes buildMockReport.
+
+Removal Plan:
+Delete buildMockReport export after LighthouseAuditEngine lands.

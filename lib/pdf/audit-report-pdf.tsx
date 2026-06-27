@@ -317,7 +317,9 @@ function CategorySection({ report }: { report: AuditReport }) {
                 <Text style={[styles.catScore, { color }]}>{cat.score}</Text>
                 <Text style={{ fontSize: S.caption, color: C.textMuted, alignSelf: "flex-end" }}>/ 100</Text>
               </View>
-              <Text style={styles.catSummary} numberOfLines={2}>{cat.summary}</Text>
+              <Text style={styles.catSummary}>
+  {cat.summary}
+</Text>
             </View>
           );
         })}
@@ -369,7 +371,9 @@ function RecommendationsSection({ report }: { report: AuditReport }) {
                 <View style={[styles.recDot, { backgroundColor: pc }]} />
                 <View style={{ flex: 1 }}>
                   <Text style={styles.recTitle}>{rec.title}</Text>
-                  <Text style={styles.recDesc} numberOfLines={3}>{rec.description}</Text>
+                  <Text style={styles.recDesc}>
+  {rec.description}
+</Text>
                   <View style={styles.recBadgeRow}>
                     {/* Impact */}
                     <View style={[styles.recBadge, { borderColor: `${pc}40`, backgroundColor: `${pc}15` }]}>

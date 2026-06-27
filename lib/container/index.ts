@@ -26,12 +26,13 @@ import type { IRecommendationGenerator } from "@/lib/interfaces/i-recommendation
 
 import {
   MockAuditStore,
-  MockAuditEngine,
-  MockScreenshotProvider,
   MockStorageProvider,
   MockReportGenerator,
   MockRecommendationGenerator,
+  MockScreenshotProvider,
 } from "@/lib/mock";
+
+import { PlaywrightAuditEngine } from "@/lib/integrations/playwright";
 
 // ── Container type ────────────────────────────────────────────────────────────
 
@@ -54,15 +55,19 @@ declare global {
 }
 
 function buildContainer(): AppContainer {
-  console.log("Building AppContainer");
-
   return {
     auditStore: new MockAuditStore(),
-    auditEngine: new MockAuditEngine(),
+
+    auditEngine: new PlaywrightAuditEngine(),
+
     screenshotProvider: new MockScreenshotProvider(),
+
     storageProvider: new MockStorageProvider(),
+
     reportGenerator: new MockReportGenerator(),
-    recommendationGenerator: new MockRecommendationGenerator(),
+
+    recommendationGenerator:
+      new MockRecommendationGenerator(),
   };
 }
 

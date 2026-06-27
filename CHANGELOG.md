@@ -295,3 +295,30 @@ Prepare backend for swapping mock implementations with production services witho
 Status
 
 Complete
+
+
+# Step 8.3 — Real Audit Execution Pipeline
+
+Completed
+
+Added
+- BrowserManager
+- PlaywrightScreenshotProvider
+- PlaywrightAuditEngine
+- LocalScreenshotStorage
+- Screenshot serve route
+- ScreenshotStorage abstraction
+- Playwright integration barrel
+
+Changed
+- Container now uses PlaywrightAuditEngine
+- mock/index.ts exports buildMockReport
+- Real screenshots replace placeholder images
+
+Temporary Architecture
+- Mock scores retained
+- buildMockReport exported as transitional dependency
+- Screenshot storage remains local filesystem
+
+Next
+- Step 8.4 Lighthouse integration

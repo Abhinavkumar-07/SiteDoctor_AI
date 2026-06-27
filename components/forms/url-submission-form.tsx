@@ -47,21 +47,32 @@ const TIMEOUT_ERROR_MESSAGE =
 
 // ── Animation variants ─────────────────────────────────────────────────────────
 
-const errorVariants = {
-  hidden: { opacity: 0, y: -6, height: 0, marginTop: 0 },
+import type { Variants } from "framer-motion";
+
+const errorVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    y: -8,
+    height: 0,
+    marginTop: 0,
+  },
+
   visible: {
     opacity: 1,
     y: 0,
     height: "auto",
     marginTop: 12,
-    transition: { duration: 0.2, ease: "easeOut" },
+    transition: {
+      duration: 0.25,
+      ease: [0.16, 1, 0.3, 1],
+    },
   },
+
   exit: {
     opacity: 0,
-    y: -4,
+    y: -8,
     height: 0,
     marginTop: 0,
-    transition: { duration: 0.15, ease: "easeIn" },
   },
 };
 
@@ -159,11 +170,18 @@ export function UrlSubmissionForm() {
         return;
       }
 
-      const result = (await res.json()) as CreateAuditResponse;
-      if (!isMountedRef.current) return;
-      setStatus("redirecting");
-      router.push(
-  `/audit/${result.auditId}?url=${encodeURIComponent(data.url)}`
+      const result = await res.json() as CreateAuditResponse;
+
+if (!isMountedRef.current) return;
+
+if (!result.id) {
+  throw new Error("Invalid response");
+}
+
+setStatus("redirecting");
+
+router.push(
+  `/audit/${result.id}?url=${encodeURIComponent(data.url)}`
 );
     } catch (err) {
       if (!isMountedRef.current) return;

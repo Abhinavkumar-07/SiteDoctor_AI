@@ -128,3 +128,31 @@ Real Service Integrations
 • Storage Provider
 
 Architecture already supports hot-swapping these implementations through the dependency container.
+
+## Current Status
+
+Step 8.3 — Real Audit Execution Pipeline
+Status: Completed
+
+Implemented:
+- Playwright integration
+- BrowserManager singleton
+- PlaywrightScreenshotProvider
+- PlaywrightAuditEngine
+- LocalScreenshotStorage
+- Screenshot serve API
+- Real desktop/mobile screenshots
+- Temporary filesystem storage
+- Shared browser lifecycle
+
+Current Engine:
+PlaywrightAuditEngine
+
+Current Screenshot Storage:
+LocalScreenshotStorage
+
+Current Step:
+8.4 — Lighthouse Integration
+
+Next Goal:
+Replace mock scores with Lighthouse metrics.
