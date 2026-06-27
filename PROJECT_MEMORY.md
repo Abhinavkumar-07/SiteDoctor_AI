@@ -151,8 +151,73 @@ PlaywrightAuditEngine
 Current Screenshot Storage:
 LocalScreenshotStorage
 
-Current Step:
-8.4 — Lighthouse Integration
+Current Status
 
-Next Goal:
-Replace mock scores with Lighthouse metrics.
+Step 8.5 — Real Lighthouse Reports
+
+Status
+
+Completed
+
+Implemented
+
+* LighthouseRunner
+* LighthouseReportParser
+* LighthouseAuditEngine
+* Recommendation extraction
+* Opportunity extraction
+* Metadata extraction
+* Overall score computation
+* Screenshot serving
+* Desktop screenshots
+* Mobile screenshots
+* PDF generation
+* Report metadata
+* Real Lighthouse categories
+
+Current Engine
+
+LighthouseAuditEngine
+
+Current Storage
+
+LocalScreenshotStorage
+
+Current Recommendation Source
+
+Lighthouse Opportunities
+
+Current Report Source
+
+Lighthouse JSON
+
+Tested Websites
+
+* example.com
+* amazon.in
+* vercel.com
+* notion.so
+
+Known Limitations
+
+* UX category remains heuristic
+* Conversion category remains heuristic
+* Reports are not persisted
+* Audits are recreated after restart
+* Filesystem screenshots are temporary
+
+Next Goal
+
+Step 8.6
+
+Supabase Persistence
+
+Objectives
+
+* Persist audits
+* Persist reports
+* Persist screenshots metadata
+* Persist recommendations
+* Build dashboard
+* Introduce historical reports
+* Prepare authentication layer

@@ -245,3 +245,82 @@ PlaywrightAuditEngine still consumes buildMockReport.
 
 Removal Plan:
 Delete buildMockReport export after LighthouseAuditEngine lands.
+
+## ADR-009
+
+Decision
+
+Introduce Lighthouse after Playwright.
+
+Status
+
+Accepted
+
+Reason
+
+Playwright already provides reusable navigation, browser lifecycle management, metadata extraction and screenshot infrastructure.
+
+Lighthouse consumes an isolated Chromium instance through chrome-launcher.
+
+Consequences
+
+Playwright responsibilities
+
+* screenshots
+* metadata extraction
+* navigation
+
+Lighthouse responsibilities
+
+* category scores
+* recommendations
+* opportunities
+* audit metadata
+
+Temporary Tradeoff
+
+UX and Conversion categories remain heuristic.
+
+Removal Plan
+
+GeminiRecommendationGenerator replaces static UX and Conversion scoring during Step 8.7.
+
+---
+
+## ADR-010
+
+Decision
+
+Keep screenshots stored locally during MVP.
+
+Status
+
+Accepted
+
+Reason
+
+Filesystem storage simplifies debugging and reduces cloud complexity.
+
+Future Migration
+
+LocalScreenshotStorage
+
+↓
+
+GCSStorageProvider
+
+↓
+
+Supabase persisted URLs
+
+Routes remain unchanged.
+
+Consumers remain unchanged.
+
+Only container registrations change.
+
+Benefits
+
+* minimal migration cost
+* dependency injection preserved
+* API stability preserved

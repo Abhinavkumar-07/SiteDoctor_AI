@@ -320,5 +320,82 @@ Temporary Architecture
 - buildMockReport exported as transitional dependency
 - Screenshot storage remains local filesystem
 
+## Step 8.4 — Lighthouse Integration
+
+Completed
+
+Added
+
+* LighthouseRunner
+* LighthouseReportParser
+* LighthouseAuditEngine
+* Lighthouse recommendation extraction
+* Category score extraction
+* Metadata extraction
+* Opportunity parser
+* Recommendation builder
+* Overall score computation
+* Overall summary generator
+
+Implemented
+
+* Performance category
+* SEO category
+* Accessibility category
+* Security category
+
+Supplemented
+
+* UX category
+* Conversion category
+
+Replaced
+
+* MockReportGenerator scores
+* Mock category generation
+
+Current Engine
+
+LighthouseAuditEngine
+
+Current Screenshot Storage
+
+LocalScreenshotStorage
+
+Current Report Source
+
+Lighthouse JSON
+
+Current Recommendation Source
+
+Lighthouse Opportunities
+
+Fallback Strategy
+
+* Screenshot failures remain non-fatal
+* Lighthouse failures fall back to static recommendations
+* Report generation never blocks frontend rendering
+
+Verified
+
+* Desktop screenshots
+* Mobile screenshots
+* Recommendation generation
+* Metadata extraction
+* PDF export
+* Real-world testing
+
+Tested Sites
+
+* example.com
+* amazon.in
+* vercel.com
+* notion.so
+
+Status
+
+Complete
+
 Next
-- Step 8.4 Lighthouse integration
+
+Step 8.6 — Supabase Persistence
