@@ -12,7 +12,6 @@
 //
 // This engine is what the container registers in Step 8.3.
 // In Step 8.4, buildReport() adds: runLighthouse() between capture and report.
-
 import type { IAuditEngine } from "@/lib/interfaces/i-audit-engine";
 import type {
   AuditStatusResponse,

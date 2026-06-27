@@ -17,6 +17,10 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  serverExternalPackages:[
+"playwright",
+"lighthouse"
+],
 
   /**
    * Prevent Next.js from exposing which framework the site uses.

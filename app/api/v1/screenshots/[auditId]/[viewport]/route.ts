@@ -43,43 +43,55 @@ export async function GET(_req: NextRequest, context: RouteContext) {
   }
 
   try {
-const storage = new LocalScreenshotStorage();
-    if (
- viewport !== "desktop" &&
- viewport !== "mobile"
-){
-   return NextResponse.json(
-      { error:"Invalid viewport" },
-      { status:404 }
-   );
-}
+  const storage = new LocalScreenshotStorage();
 
-const typedViewport: "desktop" | "mobile" = viewport;
+  const typedViewport = viewport as "desktop" | "mobile";
 
-    const exists = await storage.exists(auditId, typedViewport);
-    if (!exists) {
-      return NextResponse.json(
-        { error: "Screenshot not found.", code: "NOT_FOUND" },
-        { status: 404 },
-      );
-    }
+  const exists = await storage.exists(
+    auditId,
+    typedViewport
+  );
 
-    const buffer = await storage.read(auditId, typedViewport);
+  if (!exists) {
+    return NextResponse.json(
+      {
+        error: "Screenshot not found.",
+        code: "NOT_FOUND",
+      },
+      { status: 404 }
+    );
+  }
 
-    return new NextResponse(new Uint8Array(buffer), {
+  const buffer = await storage.read(
+    auditId,
+    typedViewport
+  );
+
+  return new NextResponse(
+    new Uint8Array(buffer),
+    {
       status: 200,
       headers: {
         "Content-Type": "image/png",
-        "Cache-Control": "public, max-age=3600, immutable",
-        "Content-Length": String(buffer.length),
-        // Security: prevent embedding in foreign frames
-        "X-Frame-Options": "SAMEORIGIN",
+        "Cache-Control":
+          "public, max-age=3600, immutable",
       },
-    });
-  } catch {
-    return NextResponse.json(
-      { error: "Failed to serve screenshot.", code: "INTERNAL_SERVER_ERROR" },
-      { status: 500 },
-    );
-  }
+    }
+  );
+
+} catch (error) {
+  console.error(
+    `[ScreenshotRoute] failed for ${auditId}/${viewport}`,
+    error
+  );
+
+  return NextResponse.json(
+    {
+      error: "Failed to serve screenshot.",
+      code: "INTERNAL_SERVER_ERROR",
+    },
+    { status: 500 }
+  );
+
+}
 }

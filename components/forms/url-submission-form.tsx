@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, AlertCircle, Globe } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -25,7 +24,6 @@ import {
   type AuditUrlOutput,
 } from "@/lib/validations/audit-url.schema";
 import {
-  type CreateAuditResponse,
   type ApiErrorBody,
   type ApiErrorCode,
   type SubmissionStatus,
@@ -33,6 +31,9 @@ import {
   SUBMISSION_FALLBACK_ERROR,
 } from "@/lib/types/audit";
 
+import type {
+CreateAuditResponse
+} from "@/lib/types/audit-api";
 // ── Constants ──────────────────────────────────────────────────────────────────
 
 const EXAMPLE_URLS = [
@@ -170,19 +171,26 @@ export function UrlSubmissionForm() {
         return;
       }
 
-      const result = await res.json() as CreateAuditResponse;
+     const raw = await res.text();
+
+console.log(raw);
+
+const payload = JSON.parse(raw);
+
+console.log(payload);
 
 if (!isMountedRef.current) return;
 
-if (!result.id) {
+if (!payload.auditId) {
   throw new Error("Invalid response");
 }
 
 setStatus("redirecting");
 
 router.push(
-  `/audit/${result.id}?url=${encodeURIComponent(data.url)}`
+ `/audit/${payload.auditId}?url=${encodeURIComponent(data.url)}`
 );
+return;
     } catch (err) {
       if (!isMountedRef.current) return;
 

@@ -32,7 +32,8 @@ import {
   MockScreenshotProvider,
 } from "@/lib/mock";
 
-import { PlaywrightAuditEngine } from "@/lib/integrations/playwright";
+import { LighthouseAuditEngine }
+from "@/lib/integrations/lighthouse/lighthouse-audit-engine";
 
 // ── Container type ────────────────────────────────────────────────────────────
 
@@ -58,7 +59,7 @@ function buildContainer(): AppContainer {
   return {
     auditStore: new MockAuditStore(),
 
-    auditEngine: new PlaywrightAuditEngine(),
+    auditEngine: new LighthouseAuditEngine(),
 
     screenshotProvider: new MockScreenshotProvider(),
 
