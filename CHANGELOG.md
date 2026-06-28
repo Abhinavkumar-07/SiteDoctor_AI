@@ -396,6 +396,49 @@ Status
 
 Complete
 
-Next
+
 
 Step 8.6 — Supabase Persistence
+# Changelog
+
+## [8.6] — Step 8.6 Supabase Persistence + Dashboard
+
+### Added
+- `lib/interfaces/i-report-store.ts` — IReportStore contract (save, findByAuditId, deleteByAuditId)
+- `lib/mock/engines/mock-report-store.ts` — in-memory IReportStore for tests + fallback
+- `lib/integrations/supabase/supabase-client.ts` — singleton service-role Supabase client
+- `lib/integrations/supabase/supabase-audit-store.ts` — IAuditStore impl (audits table)
+- `lib/integrations/supabase/supabase-report-store.ts` — IReportStore impl (audit_reports table)
+- `lib/integrations/supabase/index.ts` — public barrel
+- `app/api/v1/dashboard/route.ts` — GET /api/v1/dashboard (paginated, filterable)
+- `app/dashboard/page.tsx` — Dashboard server component
+- `app/dashboard/_components/dashboard-client.tsx` — SWR-powered dashboard UI
+- `app/dashboard/_components/audit-card.tsx` — Individual audit card
+- `supabase/migrations/001_create_audit_tables.sql` — DB migration
+
+### Modified
+- `lib/interfaces/index.ts` — added IReportStore export
+- `lib/mock/index.ts` — added MockReportStore export
+- `lib/container/index.ts` — swapped MockAuditStore → SupabaseAuditStore, added reportStore slot
+- `lib/repositories/report.repository.ts` — Supabase-first cache check + background persist
+- `lib/repositories/share.repository.ts` — Supabase-first cache check + background persist
+- `lib/services/report.service.ts` — passes container.reportStore to ReportRepository
+- `lib/services/share.service.ts` — passes container.reportStore to ShareRepository
+
+### Unchanged (frozen)
+- All route handlers (POST /audits, GET /status, GET /report, GET /share)
+- audit.service.ts
+- All Playwright integration files
+- All Lighthouse integration files
+- All frontend components
+- All pipeline stages
+- All interfaces except index.ts (additive only)
+
+---
+
+## [8.5] Recommendation Pipeline — Completed
+## [8.4] Lighthouse Integration — Completed
+## [8.3] Playwright Screenshots — Completed
+## [8.2] Backend Architecture Refactor — Completed
+## [8.1] Backend API Foundation — Completed
+## [7.1–7.8] Frontend MVP — Completed

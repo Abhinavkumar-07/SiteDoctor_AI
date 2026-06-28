@@ -206,18 +206,55 @@ Known Limitations
 * Audits are recreated after restart
 * Filesystem screenshots are temporary
 
-Next Goal
+# Current Status
 
-Step 8.6
+Project:
+SiteDoctor AI
 
-Supabase Persistence
+Current Step:
+8.6 Supabase Persistence + Dashboard
 
-Objectives
+Completed:
 
-* Persist audits
-* Persist reports
-* Persist screenshots metadata
-* Persist recommendations
-* Build dashboard
-* Introduce historical reports
-* Prepare authentication layer
+- Step 1 PRD
+- Step 2 Architecture
+- Step 3 Database
+- Step 4 API Contract
+- Step 5 Folder Structure
+- Step 6 UI Blueprint
+- Step 7.1 Frontend Foundation
+- Step 7.2 Design System
+- Step 7.3 Landing Page
+- Step 7.4 Analyze Page
+- Step 7.5 Audit Processing Page
+- Step 7.6 Report Page
+- Step 7.7 Shareable Report
+- Step 7.8 PDF Export
+- Step 8.1 Backend API Foundation
+- Step 8.2 Backend Architecture Refactor (DI + Pipeline)
+- Step 8.3 Playwright Screenshot Integration
+- Step 8.4 Lighthouse Integration
+- Step 8.5 Recommendation Pipeline
+- Step 8.6 Supabase Persistence + Dashboard
+
+Current State:
+
+- Full DI container architecture
+- LighthouseAuditEngine active
+- SupabaseAuditStore active (falls back to MockAuditStore if env vars absent)
+- SupabaseReportStore active (falls back to MockReportStore if env vars absent)
+- Dashboard at /dashboard
+- Reports persisted in Supabase on first retrieval
+- Audit records persisted on creation
+
+Current Engine:
+LighthouseAuditEngine
+
+Current Screenshot Storage:
+LocalScreenshotStorage (Step 8.7 → GCS)
+
+Current Report Store:
+SupabaseReportStore
+
+Next Task:
+Step 8.7 — Google Cloud Storage for Screenshots

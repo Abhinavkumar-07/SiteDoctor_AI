@@ -324,3 +324,59 @@ Benefits
 * minimal migration cost
 * dependency injection preserved
 * API stability preserved
+
+
+# Decisions
+
+## Step 8.6 Decisions
+
+### IReportStore is a separate interface from IAuditStore
+Reason: Report data (JSONB blobs, ~50 KB) has a different lifecycle and size
+profile from audit records (a few text fields). Merging them into IAuditStore
+would force every IAuditStore implementation to also handle large blobs.
+The separation keeps each interface focused and its implementations smaller.
+
+### Report persistence is non-blocking (fire-and-forget)
+ReportRepository.getReport() does `this.reportStore.save(report).catch(...)` —
+it does not await the persist. The user gets their report immediately.
+A Supabase persist failure is logged but doesn't surface as a 500.
+Rationale: Lighthouse already ran, the report is ready — a DB write failure
+should not degrade UX. The next request will re-run Lighthouse and re-persist.
+
+### Supabase env-var guard in container
+If SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY are absent, the container falls
+back to MockAuditStore + MockReportStore. This keeps local dev working without
+a Supabase project configured. A console.warn is emitted to make it obvious.
+
+### RLS disabled in Step 8.6
+Row Level Security is explicitly disabled. It will be re-enabled in Step 9
+(Authentication) with user_id columns and user-scoped policies.
+Leaving it enabled now with no policies would block all service-role writes.
+
+### Dashboard uses client-side SWR not server-side fetch
+The dashboard list must refresh after deletes and new audits.
+Server-side rendering would give stale data. SWR gives live pagination,
+search, and instant re-validation after mutations.
+
+### CASCADE DELETE on audit_reports
+Deleting an audit record cascades to the audit_reports row.
+The SupabaseReportStore.deleteByAuditId() deletes from the audits table —
+the FK cascade handles the report row. Single operation, consistent state.
+
+### GET /api/v1/dashboard is an open endpoint in Step 8.6
+No auth guard yet. Step 9 adds Next.js middleware that requires a valid
+session before any /dashboard/* or /api/v1/dashboard* request is processed.
+The dashboard endpoint itself does not change in Step 9 — only middleware.
+
+---
+
+## Previous Decisions
+
+### Single Next.js application — no Turborepo
+### Supabase Auth disabled until Step 9
+### Playwright for screenshots (desktop 1280×800, mobile 390×844)
+### Lighthouse via CDP port bridging to shared BrowserManager Chrome instance
+### LighthouseAuditEngine: best-practices → security category mapping
+### UX + Conversion remain hash-seeded until Gemini (future step)
+### LocalScreenshotStorage → GCS in Step 8.7
+### Container is the single swap point — routes, services, repos never change per step
