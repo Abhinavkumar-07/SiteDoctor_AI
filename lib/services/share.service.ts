@@ -1,9 +1,6 @@
 // lib/services/share.service.ts
 //
-// Owns public share token resolution.
-// Step 8.2 changes vs Step 8.1:
-//   - No longer imports mock store or builders directly.
-//   - Delegates to ShareRepository with container-injected deps.
+// Step 8.6 change: passes container.reportStore to ShareRepository.
 
 import type { ShareReportResponse } from "@/lib/types/audit-api";
 import { getContainer } from "@/lib/container";
@@ -13,6 +10,10 @@ export async function getSharedReport(
   shareToken: string,
 ): Promise<ShareReportResponse> {
   const container = getContainer();
-  const repo = new ShareRepository(container.auditStore, container.auditEngine);
+  const repo = new ShareRepository(
+    container.auditStore,
+    container.auditEngine,
+    container.reportStore,
+  );
   return repo.getSharedReport(shareToken);
 }

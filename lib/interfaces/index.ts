@@ -8,3 +8,5 @@ export type { IScreenshotProvider, ScreenshotResult } from "./i-screenshot-provi
 export type { IReportGenerator, RawAnalysisInput, GeneratedReport } from "./i-report-generator";
 export type { IRecommendationGenerator } from "./i-recommendation-generator";
 export type { IStorageProvider, UploadResult } from "./i-storage-provider";
+export type { IReportStore } from "./i-report-store";
+export type { IDashboardStore } from "./i-dashboard-store";

@@ -18,3 +18,5 @@ export { MockRecommendationGenerator } from "./generators/mock-recommendation-ge
 
 // Transitional export — remove in Step 8.4 when real Lighthouse scores replace mock data
 export { buildMockReport } from "./generators/mock-report-data";
+export { MockReportStore } from "./engines/mock-report-store";
+export { MockDashboardStore } from "./engines/mock-dashboard-store";

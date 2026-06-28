@@ -1,12 +1,7 @@
 // lib/services/report.service.ts
 //
-// Owns report retrieval.
-// Step 8.2 changes vs Step 8.1:
-//   - No longer calls buildMockStatus/buildMockReport directly.
-//   - Delegates entirely to ReportRepository, which itself depends on
-//     IAuditStore and IAuditEngine — both resolved via container.
-
-// lib/services/report.service.ts
+// Step 8.6 change: passes container.reportStore to ReportRepository.
+// The method signature is identical — callers (route handler) unchanged.
 
 import type { AuditReportResponse } from "@/lib/types/audit-api";
 import { getContainer } from "@/lib/container";
@@ -19,7 +14,7 @@ export async function getAuditReport(
   const repo = new ReportRepository(
     container.auditStore,
     container.auditEngine,
+    container.reportStore,
   );
-
   return repo.getReport(auditId);
 }
