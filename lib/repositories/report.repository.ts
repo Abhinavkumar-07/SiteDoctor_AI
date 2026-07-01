@@ -11,7 +11,7 @@ import type { IAuditEngine } from "@/lib/interfaces/i-audit-engine";
 import type { IReportStore } from "@/lib/interfaces/i-report-store";
 import type { AuditReportResponse } from "@/lib/types/audit-api";
 import { Errors } from "@/lib/types/api-errors";
-
+import { getOrBuildReport }from "./in-flight-report-cache";
 export class ReportRepository {
   constructor(
     private readonly store: IAuditStore,
@@ -39,22 +39,47 @@ export class ReportRepository {
     if (persisted) return persisted;
 
     // ── 4. Cache miss — build report via engine ───────────────────────────────
-    const report = await this.engine.buildReport(
-      record.auditId,
-      record.url,
-      record.createdAt,
-    );
+    const report = await getOrBuildReport(
 
-    // ── 5. Persist asynchronously (non-blocking) ─────────────────────────────
-    // We do not await — the caller gets the response immediately.
-    // A failed persist is logged but does not surface as an error to the user.
-    this.reportStore.save(report).catch((err) => {
-      console.error(
-        `[ReportRepository] Background persist failed for ${auditId}:`,
-        err,
+  auditId,
+
+  async () => {
+
+    const report =
+      await this.engine.buildReport(
+
+        record.auditId,
+
+        record.url,
+
+        record.createdAt,
+
       );
-    });
+
+    try {
+
+      await this.reportStore.save(report);
+
+    }
+
+    catch (err) {
+
+      console.error(
+
+        `[ReportRepository] Persist failed for ${auditId}`,
+
+        err,
+
+      );
+
+    }
 
     return report;
+
+  },
+
+);
+
+return report;
   }
 }

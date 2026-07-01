@@ -11,7 +11,7 @@ import type { IReportStore } from "@/lib/interfaces/i-report-store";
 import type { ShareReportResponse } from "@/lib/types/audit-api";
 import { shareTokenToAuditId } from "@/lib/utils/id";
 import { Errors } from "@/lib/types/api-errors";
-
+import { getOrBuildReport } from "./in-flight-report-cache";
 export class ShareRepository {
   constructor(
     private readonly store: IAuditStore,
@@ -39,23 +39,66 @@ export class ShareRepository {
 
     // Try persisted report first
     const persisted = await this.reportStore.findByAuditId(record.auditId);
-    const report =
-      persisted ??
-      (await this.engine.buildReport(
-        record.auditId,
-        record.url,
-        record.createdAt,
-      ));
+    let report = persisted;
+
+if (!report) {
+
+  report = await getOrBuildReport(
+
+    record.auditId,
+
+    async () => {
+
+      const generated =
+        await this.engine.buildReport(
+
+          record.auditId,
+
+          record.url,
+
+          record.createdAt,
+
+        );
+
+      try {
+
+        await this.reportStore.save(
+
+          generated,
+
+        );
+
+      }
+
+      catch (err) {
+
+        console.error(
+
+          `[ShareRepository] Persist failed for ${record.auditId}`,
+
+          err,
+
+        );
+
+      }
+
+      return generated;
+
+    },
+
+  );
+
+}
 
     // Persist on miss
-    if (!persisted) {
-      this.reportStore.save(report).catch((err) => {
-        console.error(
-          `[ShareRepository] Background persist failed for ${record!.auditId}:`,
-          err,
-        );
-      });
-    }
+    // if (!persisted) {
+    //   this.reportStore.save(report).catch((err) => {
+    //     console.error(
+    //       `[ShareRepository] Background persist failed for ${record!.auditId}:`,
+    //       err,
+    //     );
+    //   });
+    // }
 
     return {
       ...report,
