@@ -20,3 +20,5 @@ export { MockRecommendationGenerator } from "./generators/mock-recommendation-ge
 export { buildMockReport } from "./generators/mock-report-data";
 export { MockReportStore } from "./engines/mock-report-store";
 export { MockDashboardStore } from "./engines/mock-dashboard-store";
+export { MockAuditEventStore }
+from "./engines/mock-audit-event-store";

@@ -20,7 +20,8 @@ import type { IReportGenerator } from "@/lib/interfaces/i-report-generator";
 import type { IRecommendationGenerator } from "@/lib/interfaces/i-recommendation-generator";
 import type { IReportStore } from "@/lib/interfaces/i-report-store";
 import type { IDashboardStore } from "@/lib/interfaces/i-dashboard-store";
-
+import type { IAuditEventStore }
+from "@/lib/interfaces/i-audit-event-store";
 // ── Mock implementations ──────────────────────────────────────────────────────
 import {
   MockAuditStore,
@@ -30,6 +31,7 @@ import {
   MockScreenshotProvider,
   MockReportStore,
   MockDashboardStore,
+  MockAuditEventStore,
 } from "@/lib/mock";
 
 // ── Real implementations ──────────────────────────────────────────────────────
@@ -38,6 +40,7 @@ import {
   SupabaseAuditStore,
   SupabaseReportStore,
   SupabaseDashboardStore,
+  SupabaseAuditEventStore,
 } from "@/lib/integrations/supabase";
 
 // ── Container type ────────────────────────────────────────────────────────────
@@ -51,6 +54,7 @@ export interface AppContainer {
   recommendationGenerator: IRecommendationGenerator;
   reportStore: IReportStore;
   dashboardStore: IDashboardStore;
+  auditEventStore: IAuditEventStore;
 }
 
 // ── Env-var guard ─────────────────────────────────────────────────────────────
@@ -90,7 +94,8 @@ function buildContainer(): AppContainer {
     auditStore:     useSupabase ? new SupabaseAuditStore()     : new MockAuditStore(),
     reportStore:    useSupabase ? new SupabaseReportStore()    : new MockReportStore(),
     dashboardStore: useSupabase ? new SupabaseDashboardStore() : new MockDashboardStore(),
-
+    auditEventStore: useSupabase ? new SupabaseAuditEventStore() : new MockAuditEventStore(),
+    
     // ── Step 8.4: Real Lighthouse engine (unchanged) ─────────────────────────
     auditEngine: new LighthouseAuditEngine(),
 
