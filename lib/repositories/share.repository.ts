@@ -90,16 +90,7 @@ if (!report) {
 
 }
 
-    // Persist on miss
-    // if (!persisted) {
-    //   this.reportStore.save(report).catch((err) => {
-    //     console.error(
-    //       `[ShareRepository] Background persist failed for ${record!.auditId}:`,
-    //       err,
-    //     );
-    //   });
-    // }
-
+  
     return {
       ...report,
       shareToken,
