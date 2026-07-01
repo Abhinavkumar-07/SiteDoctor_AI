@@ -374,3 +374,53 @@ separate Cloud Run service.
 → The `.env.local` file must be in the project root, not inside `app/`.
 → Restart the dev server after adding/changing env vars — Next.js reads
   them at startup, not at request time.
+
+  ---
+
+# Step 8.9 Verification
+
+Build
+
+[✓] npm run typecheck
+
+[✓] npm run build
+
+Audit Events
+
+[✓] GET /api/v1/audits/:id/events
+
+[✓] MockAuditEventStore
+
+[✓] SupabaseAuditEventStore
+
+[✓] auditEventStore container slot
+
+Persistence
+
+[✓] Event persistence
+
+[✓] Mock fallback
+
+[✓] report cache retained
+
+[✓] share cache retained
+
+Regression
+
+[✓] POST /audits
+
+[✓] GET /status
+
+[✓] GET /report
+
+[✓] GET /share
+
+[✓] GET /dashboard
+
+[✓] DELETE dashboard endpoint
+
+Version
+
+Current Release
+
+v0.8.9

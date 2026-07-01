@@ -442,3 +442,182 @@ Step 8.6 — Supabase Persistence
 ## [8.2] Backend Architecture Refactor — Completed
 ## [8.1] Backend API Foundation — Completed
 ## [7.1–7.8] Frontend MVP — Completed
+
+# Changelog
+
+---
+
+## v0.8.9 — Audit Events
+
+Date: 2026-07-01
+
+### Added
+
+- IAuditEventStore
+- MockAuditEventStore
+- SupabaseAuditEventStore
+- GET /api/v1/audits/:auditId/events
+- auditEventStore container slot
+- audit event persistence
+- migration 003_audit_events_enhancements.sql
+
+### Improvements
+
+- report lifecycle tracking
+- dashboard consistency
+- share flow observability
+
+### Verification
+
+✓ npm run typecheck
+
+✓ npm run build
+
+✓ Supabase persistence
+
+✓ Event endpoint operational
+
+✓ Mock fallback operational
+
+---
+
+## v0.8.8 — In-flight Cache
+
+### Added
+
+- in-flight-report-cache.ts
+
+### Fixed
+
+OG1
+
+await persistence on share path
+
+OG3
+
+deduplicate concurrent buildReport calls
+
+/report + /share now share one Lighthouse execution
+
+---
+
+## v0.8.6 — Persistence Layer
+
+### Added
+
+SupabaseAuditStore
+
+SupabaseReportStore
+
+SupabaseDashboardStore
+
+Dashboard API
+
+DELETE dashboard endpoint
+
+Dashboard UI
+
+---
+
+## v0.8.4
+
+LighthouseAuditEngine
+
+Playwright screenshots
+
+Lighthouse parser
+
+report generation
+
+---
+
+## v0.8.1
+
+Repository pattern
+
+Pipeline abstraction
+
+Container architecture
+
+Dependency inversion
+---
+
+# v0.8.8
+
+Date
+
+2026-07-01
+
+Added
+
+- in-flight-report-cache.ts
+
+Fixed
+
+OG1
+
+await persistence on share path
+
+OG3
+
+deduplicate concurrent buildReport()
+
+single Lighthouse execution
+
+cross-path deduplication
+
+/report + /share share same Promise
+
+Verified
+
+✓ npm run typecheck
+
+✓ npm run build
+
+✓ Supabase persistence
+
+✓ share cache
+
+✓ report cache
+
+✓ concurrent execution handling
+
+---
+
+# v0.8.9
+
+Date
+
+2026-07-01
+
+Added
+
+- IAuditEventStore
+- MockAuditEventStore
+- SupabaseAuditEventStore
+- GET /api/v1/audits/:auditId/events
+- auditEventStore container slot
+- event persistence
+- migration 003
+
+Improved
+
+- audit observability
+- lifecycle tracking
+- share path visibility
+
+Verified
+
+✓ npm run typecheck
+
+✓ npm run build
+
+✓ event endpoint operational
+
+✓ Supabase persistence
+
+✓ mock fallback operational
+
+✓ dashboard unaffected
+
+✓ report persistence unaffected

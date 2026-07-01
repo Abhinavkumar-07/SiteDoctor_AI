@@ -380,3 +380,201 @@ The dashboard endpoint itself does not change in Step 9 — only middleware.
 ### UX + Conversion remain hash-seeded until Gemini (future step)
 ### LocalScreenshotStorage → GCS in Step 8.7
 ### Container is the single swap point — routes, services, repos never change per step
+
+
+# Decision Log
+
+---
+
+## ADR-008
+
+Date
+
+2026-07-01
+
+Decision
+
+Report generation remains lazy.
+
+Reason
+
+Avoid interface breakage.
+
+IAuditEngine.getStatus remains synchronous.
+
+Future Step 9.0 introduces worker execution.
+
+---
+
+## ADR-009
+
+Date
+
+2026-07-01
+
+Decision
+
+Use repository-scoped Promise cache.
+
+File
+
+in-flight-report-cache.ts
+
+Reason
+
+Prevent duplicate Lighthouse execution.
+
+Scope
+
+Single Node process.
+
+Cross-pod locking deferred.
+
+---
+
+## ADR-010
+
+Date
+
+2026-07-01
+
+Decision
+
+Introduce IAuditEventStore.
+
+Reason
+
+Separate audit lifecycle concerns from IAuditStore.
+
+Container owns implementation.
+
+No repository imports integrations.
+
+No service imports integrations.
+
+---
+
+## ADR-011
+
+Date
+
+2026-07-01
+
+Decision
+
+Event persistence is additive.
+
+No existing interfaces modified.
+
+auditEventStore added as independent dependency.
+
+Mock fallback preserved.
+---
+
+## ADR-012
+
+Date
+
+2026-07-01
+
+Decision
+
+Persist audit lifecycle events separately.
+
+Status
+
+Accepted
+
+Reason
+
+Audit records and audit events have different lifecycle characteristics.
+
+Audit records are mutable.
+
+Audit events are append-only.
+
+Consequences
+
+Introduced
+
+- IAuditEventStore
+- MockAuditEventStore
+- SupabaseAuditEventStore
+
+Container owns implementations.
+
+Repositories consume interfaces.
+
+Services remain integration agnostic.
+
+---
+
+## ADR-013
+
+Date
+
+2026-07-01
+
+Decision
+
+Deduplicate concurrent report generation.
+
+Status
+
+Accepted
+
+Reason
+
+Multiple requests for the same audit may arrive before report persistence completes.
+
+Solution
+
+Repository-scoped Promise cache.
+
+File
+
+lib/repositories/in-flight-report-cache.ts
+
+Scope
+
+Single process.
+
+Future
+
+Redis locking.
+
+Distributed coordination.
+
+---
+
+## ADR-014
+
+Date
+
+2026-07-01
+
+Decision
+
+Keep report generation lazy.
+
+Status
+
+Accepted
+
+Reason
+
+Avoid interface breakage.
+
+IAuditEngine.getStatus remains synchronous.
+
+Background execution deferred.
+
+Future
+
+Step 9 introduces worker execution.
+
+Cloud Tasks.
+
+Persistent lifecycle tracking.
+
+Real completion status.

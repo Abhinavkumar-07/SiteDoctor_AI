@@ -258,3 +258,187 @@ SupabaseReportStore
 
 Next Task:
 Step 8.7 — Google Cloud Storage for Screenshots
+
+# SiteDoctor AI
+
+Status
+
+Step 8.9 Complete
+
+---
+
+Features
+
+✓ Lighthouse integration
+
+✓ Playwright screenshots
+
+✓ Supabase persistence
+
+✓ Dashboard
+
+✓ Share links
+
+✓ Report cache
+
+✓ In-flight deduplication
+
+✓ Audit event timeline
+
+✓ Mock fallback
+
+✓ Event API
+
+---
+
+API
+
+POST /api/v1/audits
+
+GET /api/v1/audits/:id/status
+
+GET /api/v1/audits/:id/report
+
+GET /api/v1/audits/:id/events
+
+GET /api/v1/share/:token
+
+GET /api/v1/dashboard
+
+DELETE /api/v1/dashboard/:id
+
+---
+
+# SiteDoctor AI
+
+Status
+
+Step 8.9 Complete
+
+Version
+
+v0.8.9
+
+---
+
+Completed
+
+✓ Frontend MVP
+
+✓ Dependency Injection
+
+✓ Repository Pattern
+
+✓ Pipeline Layer
+
+✓ Playwright
+
+✓ Lighthouse
+
+✓ Supabase Persistence
+
+✓ Dashboard
+
+✓ Report Persistence
+
+✓ Share Links
+
+✓ PDF Export
+
+✓ In-flight Cache
+
+✓ Audit Event Persistence
+
+✓ Event API
+
+✓ Mock Fallback
+
+---
+
+Current Architecture
+
+Container
+
+↓
+
+Repositories
+
+↓
+
+Interfaces
+
+↓
+
+Supabase
+
+↓
+
+Lighthouse
+
+↓
+
+Playwright
+
+---
+
+Current Engine
+
+LighthouseAuditEngine
+
+Current Report Store
+
+SupabaseReportStore
+
+Current Event Store
+
+SupabaseAuditEventStore
+
+Current Screenshot Storage
+
+LocalScreenshotStorage
+
+---
+
+Current APIs
+
+POST /api/v1/audits
+
+GET /api/v1/audits/:id/status
+
+GET /api/v1/audits/:id/report
+
+GET /api/v1/audits/:id/events
+
+GET /api/v1/share/:token
+
+GET /api/v1/dashboard
+
+DELETE /api/v1/dashboard/:id
+
+---
+
+Known Limitations
+
+• report generation remains lazy
+
+• status progression remains wall-clock based
+
+• no worker execution
+
+• no distributed locking
+
+• screenshots stored locally
+
+---
+
+Next Milestone
+
+Step 9.0
+
+Background Workers
+
+Cloud Tasks
+
+Persistent Execution Lifecycle
+
+Real Completion Tracking
